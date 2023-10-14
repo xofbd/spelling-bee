@@ -42,16 +42,28 @@ def score(word):
     return len(word) + bonus
 
 
-def main(letters, vocab_path=None):
-    if vocab_path is None:
-        vocab_path = "/usr/share/dict/words"
-
+def main(letters, vocab_path):
     vocab = load_vocab(vocab_path)
     words = solve(letters.lower(), vocab)
     print_results(words)
 
 
 if __name__ == "__main__":
-    import sys
+    from argparse import ArgumentParser
 
-    main("".join(*sys.argv[1:]))
+    parser = ArgumentParser(description="Find valid words in spelling bee")
+    parser.add_argument(
+        "letters",
+        help="letters to use with the center letter first"
+    )
+    parser.add_argument(
+        "--vocab",
+        help="path to the vocabulary to search through",
+        metavar="vocab",
+        dest="vocab_path",
+
+        default="/usr/share/dict/words"
+    )
+    args = parser.parse_args()
+
+    main(args.letters, args.vocab_path)
