@@ -61,7 +61,6 @@ if __name__ == "__main__":
         help="path to the vocabulary to search through",
         metavar="vocab",
         dest="vocab_path",
-
         default="/usr/share/dict/words"
     )
     args = parser.parse_args()
