@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 
-def load_vocab(path):
+def load_dict(path):
     with open(path, "r") as f:
         for line in f:
             yield line.strip().lower()
 
 
-def solve(letters, vocab):
+def solve(letters, dict_):
     center_letter = letters[0]
     letters = set(letters)
 
-    return [word for word in vocab if check(center_letter, letters, word)]
+    return [word for word in dict_ if check(center_letter, letters, word)]
 
 
 def check(center_letter, letters, word):
@@ -42,9 +42,9 @@ def score(word):
     return len(word) + bonus
 
 
-def main(letters, vocab_path):
-    vocab = load_vocab(vocab_path)
-    words = solve(letters.lower(), vocab)
+def main(letters, dict_path):
+    dict_ = load_dict(dict_path)
+    words = solve(letters.lower(), dict_)
     print_results(words)
 
 
@@ -57,12 +57,13 @@ if __name__ == "__main__":
         help="letters to use with the center letter first"
     )
     parser.add_argument(
-        "--vocab",
-        help="path to the vocabulary to search through",
-        metavar="vocab",
-        dest="vocab_path",
+        "-d",
+        "--dict",
+        help="path to the dictionary to search through",
+        metavar="dictionary",
+        dest="dict_path",
         default="/usr/share/dict/words"
     )
     args = parser.parse_args()
 
-    main(args.letters, args.vocab_path)
+    main(args.letters, args.dict_path)
