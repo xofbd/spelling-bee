@@ -1,34 +1,10 @@
 #!/usr/bin/env python3
-
-def load_dict(path):
-    with open(path, "r") as f:
-        for line in f:
-            yield line.strip().lower()
-
-
-def solve(letters, dict_):
-    center_letter = letters[0]
-    letters = set(letters)
-
-    return [word for word in dict_ if check(center_letter, letters, word)]
-
-
-def check(center_letter, letters, word):
-    if len(word) < 4:
-        return False
-
-    if center_letter not in word:
-        return False
-
-    if not (set(word) - letters):
-        return True
-
-    return False
+from solve_with_dict import load_dict, solve as solve_with_dict
+from solve_with_trie import load_trie, solve as solve_with_trie
 
 
 def print_results(words):
     """Print words in sorted order by score"""
-
     for word in sorted(words, key=lambda word: (-score(word), word)):
         print(word)
 
@@ -42,9 +18,16 @@ def score(word):
     return len(word) + bonus
 
 
-def main(letters, dict_path):
-    dict_ = load_dict(dict_path)
-    words = solve(letters.lower(), dict_)
+def main(letters, ds_path):
+    if ds_path.endswith(".pkl"):
+        solver = solve_with_trie
+        loader = load_trie
+    else:
+        solver = solve_with_dict
+        loader = load_dict
+
+    data_structure = loader(ds_path)
+    words = solver(letters.lower(), data_structure)
     print_results(words)
 
 
@@ -59,11 +42,10 @@ if __name__ == "__main__":
     parser.add_argument(
         "-d",
         "--dict",
-        help="path to the dictionary to search through",
-        metavar="dictionary",
-        dest="dict_path",
+        help="path to the dictionary or trie to search through",
+        dest="ds_path",
         default="/usr/share/dict/words"
     )
     args = parser.parse_args()
 
-    main(args.letters, args.dict_path)
+    main(args.letters, args.ds_path)
