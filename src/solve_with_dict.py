@@ -21,4 +21,4 @@ def solve(letters, dict_):
     center_letter = letters[0]
     letters = set(letters)
 
-    return [word for word in dict_ if check(center_letter, letters, word)]
+    return {word for word in dict_ if check(center_letter, letters, word)}

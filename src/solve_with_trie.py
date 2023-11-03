@@ -17,9 +17,9 @@ def gen_signatures(letters):
 
 
 def solve(letters, trie):
-    words = []
+    words = set()
 
     for signature in gen_signatures(letters):
-        words.extend(trie.get(signature, []))
+        words.update(trie.get(signature, []))
 
     return words
