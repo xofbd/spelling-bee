@@ -8,4 +8,4 @@ data/trie.pkl: | data
 
 .PHONY: clean
 clean:
-	rm -rf data
+	rm -rf data src/__pycache__
